@@ -41,6 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InvoiceClient.cs" />
+    <Compile Include="InvoiceReceivingClient.cs" />
+    <Compile Include="InvoiceReceivingSupplier.cs" />
+    <Compile Include="InvoiceSupplier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
