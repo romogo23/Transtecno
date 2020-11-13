@@ -1,27 +1,26 @@
-﻿using DOM;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.SqlClient;
 
 namespace DAO
 {
-    public class DAOInvoiceReceivingClient
+    class DAOInvoiceReceivingSupplier
     {
-        SqlConnection conn = new SqlConnection(Properties.Settings.Default.connString); 
-        public void InsertInvoiceReceivingClient(InvoiceReceivingClient invC)
+        SqlConnection conn = new SqlConnection(Properties.Settings.Default.connString);
+        public void InsertInvoiceReceivingSupplier(InvoiceReceivingClient invC)
         {
-            if (VerifyInvoiceReceivingClient(invC.idClient) == 0) {
-                String query = "INSERT INTO DESTINATARIO_FACTURA_CLIENTE(ID_CLIENTE, CORREO, NOMBRE) " +
-                    "VALUES(@idClient,@email,@nameClient)";
+            if (VerifyInvoiceReceivingClient(invC.idClient) == 0)
+            {
+                String query = "INSERT INTO DESTINATARIO_FACTURA_PROVEEDOR(ID_PROVEEDOR, CORREO, NOMBRE) " +
+                    "VALUES(@idProveedor,@email,@name)";
 
                 SqlCommand comm = new SqlCommand(query, conn);
                 comm.Connection = conn;
-                comm.Parameters.AddWithValue("@idClient", invC.idClient);
+                comm.Parameters.AddWithValue("@idProveedor", invC.idClient);
                 comm.Parameters.AddWithValue("@email", invC.email);
-                comm.Parameters.AddWithValue("@nameClient", invC.nameClient);
+                comm.Parameters.AddWithValue("@name", invC.nameClient);
                 if (conn.State != System.Data.ConnectionState.Open)
                 {
                     conn.Open();
@@ -34,13 +33,13 @@ namespace DAO
             }
         }
 
-        public int VerifyInvoiceReceivingClient(string id)
+        public int VerifyInvoiceReceivingSupplier(string id)
         {
-            String query = "Select count(0) from DESTINATARIO_FACTURA_CLIENTE where ID_CLIENTE = @idClient ";
+            String query = "Select count(0) from DESTINATARIO_FACTURA_PROVEEDOR where ID_PROVEEDOR = @idProveedor";
             int verify;
             SqlCommand comm = new SqlCommand(query, conn);
             comm.Connection = conn;
-            comm.Parameters.AddWithValue("@idClient", id);
+            comm.Parameters.AddWithValue("@idProveedor", id);
             if (conn.State != System.Data.ConnectionState.Open)
             {
                 conn.Open();
@@ -50,7 +49,7 @@ namespace DAO
             {
                 conn.Open();
             }
-            return verify; 
+            return verify;
         }
     }
 }

@@ -21,5 +21,10 @@ namespace DOM
             this.password = password;
             this.rol = rol;
         }
+
+        public User()
+        {
+        
+        }
     }
 }
