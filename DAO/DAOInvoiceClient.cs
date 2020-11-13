@@ -49,6 +49,87 @@ namespace DAO
 
         }
 
+        public Boolean ModifyInvoiceClient(InvoiceClient invC)
+        {
+            DAOInvoiceReceivingClient invoiceReceivingClient = new DAOInvoiceReceivingClient();
+            if (verifyInvoiceClient(invC.numberInvoice) == 0)
+            {
+
+                String query = "Update FACTURA_CLIENTE set METODO_PAGO = @payMethod, ID_METODO_PAGO = @idPayMethod, FECHA_PAGO = @paymentDate where NUMERO_FACTURA = @numberInvoice";
+                SqlCommand comm = new SqlCommand(query, conn);
+                comm.Connection = conn;
+                comm.Parameters.AddWithValue("@numberInvoice", invC.numberInvoice);
+                comm.Parameters.AddWithValue("@paymentDate", invC.paymentDate);
+                comm.Parameters.AddWithValue("@idPayMethod", invC.idPayMethod);
+                comm.Parameters.AddWithValue("@payMethod", invC.payMethod);
+                if (conn.State != System.Data.ConnectionState.Open)
+                {
+                    conn.Open();
+                }
+                comm.ExecuteNonQuery();
+                if (conn.State != System.Data.ConnectionState.Open)
+                {
+                    conn.Open();
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        public int verifyInvoiceClient(int numberInvoice)
+        {
+                String query = " select count(*) from FACTURA_CLIENTE where NUMERO_FACTURA = @numberInvoice";
+                SqlCommand comm = new SqlCommand(query, conn);
+                comm.Connection = conn;
+                comm.Parameters.AddWithValue("@numberInvoice",numberInvoice);
+                if (conn.State != System.Data.ConnectionState.Open)
+                {
+                    conn.Open();
+                }
+                int verify = (int) comm.ExecuteScalar();
+                if (conn.State != System.Data.ConnectionState.Open)
+                {
+                    conn.Open();
+                }
+                return verify;   
+        }
+
+
+        public Boolean CloseInvoiceClient(InvoiceClient invC)
+        {
+            DAOInvoiceReceivingClient invoiceReceivingClient = new DAOInvoiceReceivingClient();
+            if (verifyInvoiceClient(invC.numberInvoice) == 0)
+            {
+
+                String query = "Update FACTURA_CLIENTE set METODO_PAGO = @payMethod, ID_METODO_PAGO = @idPayMethod, FECHA_PAGO = @paymentDate where NUMERO_FACTURA = @numberInvoice";
+                SqlCommand comm = new SqlCommand(query, conn);
+                comm.Connection = conn;
+                comm.Parameters.AddWithValue("@numberInvoice", invC.numberInvoice);
+                comm.Parameters.AddWithValue("@paymentDate", invC.paymentDate);
+                comm.Parameters.AddWithValue("@idPayMethod", invC.idPayMethod);
+                comm.Parameters.AddWithValue("@payMethod", invC.payMethod);
+                if (conn.State != System.Data.ConnectionState.Open)
+                {
+                    conn.Open();
+                }
+                comm.ExecuteNonQuery();
+                if (conn.State != System.Data.ConnectionState.Open)
+                {
+                    conn.Open();
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
     }
 }
 
