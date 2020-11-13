@@ -8,9 +8,9 @@ namespace DOM
 {
     public class InvoiceReceivingClient
     {
-        private string idClient { get; set; }
-        private string email { get; set; }
-        private string nameClient { get; set; }
+        public string idClient { get; set; }
+        public string email { get; set; }
+        public string nameClient { get; set; }
 
         public InvoiceReceivingClient(string idClient, string email, string nameClient)
         {

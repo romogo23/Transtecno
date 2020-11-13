@@ -8,13 +8,13 @@ namespace DOM
 {
     public class Remainder
     {
-        private int idRemainder { get; set; }
-        private int invoiceNumberSupplier { get; set; }
-        private int invoiceNumberClient { get; set; }
-        private string description { get; set; }
-        private string userName { get; set; }
-        private DateTime dateRemainder { get; set; }
-        private string email { get; set; }
+        public int idRemainder { get; set; }
+        public int invoiceNumberSupplier { get; set; }
+        public int invoiceNumberClient { get; set; }
+        public string description { get; set; }
+        public string userName { get; set; }
+        public DateTime dateRemainder { get; set; }
+        public string email { get; set; }
 
         public Remainder(int invoiceNumberSupplier, int invoiceNumberClient, string description, string userName,
                 DateTime dateRemainder, string email)

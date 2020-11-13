@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DOM;
 
 namespace DAO
 {
@@ -10,18 +11,20 @@ namespace DAO
     {
         SqlConnection conn = new SqlConnection(Properties.Settings.Default.connString); //poner la ruta de la base de datos en línea
         SqlConnection conn2 = new SqlConnection(Properties.Settings.Default.connString);
-        public void InsertProduct(Product p)
+        public void InsertInvoiceClient(InvoiceClient invC)
         {
-            String query = "INSERT INTO Producto(Codigo,Nombre,Precio_Venta,Cantidad_Inventario,Producto_Activo,Unidad,Categoria) VALUES(@code,@name,@price,@quantity,@active,@unity,@category)";
+            String query = "INSERT INTO FACTURA_CLIENTE(NUMERO_FACTURA,ID_CLIENTE,FECHA_PAGO,ID_METODO_PAGO, METODO_PAGO," +
+                "MONTO,ESTADO, CONDICION_PAGO) VALUES(@code,@name,@price,@quantity,@active,@unity,@category)";
             SqlCommand comm = new SqlCommand(query, conn);
             comm.Connection = conn;
-            comm.Parameters.AddWithValue("@code", p.Code);
-            comm.Parameters.AddWithValue("@name", p.Name);
-            comm.Parameters.AddWithValue("@price", p.Price);
-            comm.Parameters.AddWithValue("@quantity", p.Quantity);
-            comm.Parameters.AddWithValue("@active", p.Active);
-            comm.Parameters.AddWithValue("@unity", p.Unity);
-            comm.Parameters.AddWithValue("@category", p.Category);
+            comm.Parameters.AddWithValue("@numberInvoice", invC.numberInvoice);
+            comm.Parameters.AddWithValue("@idClient", invC.idClient);
+            comm.Parameters.AddWithValue("@paymentDate", invC.paymentDate);
+            comm.Parameters.AddWithValue("@idPayMethod", invC.idPayMethod);
+            comm.Parameters.AddWithValue("@payMethod", invC.payMethod);
+            comm.Parameters.AddWithValue("@money", invC.money);
+            comm.Parameters.AddWithValue("@condition", invC.condition);
+            comm.Parameters.AddWithValue("@paymentCondition", invC.paymentCondition);
             conn.Open();
             comm.ExecuteNonQuery();
             conn.Close();

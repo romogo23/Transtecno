@@ -8,14 +8,14 @@ namespace DOM
 {
     public class InvoiceClient
     {
-        private int numberInvoice { get; set; }
-        private string idClient { get; set; }
-        private DateTime paymentDate { get; set; }
-        private int idPayMethod { get; set; }
-        private string payMethod { get; set; }
-        private double money { get; set; }
-        private Boolean condition { get; set; }
-        private string paymentCondition { get; set; }
+        public int numberInvoice { get; set; }
+        public string idClient { get; set; }
+        public DateTime paymentDate { get; set; }
+        public int idPayMethod { get; set; }
+        public string payMethod { get; set; }
+        public double money { get; set; }
+        public Boolean condition { get; set; }
+        public string paymentCondition { get; set; }
 
         public InvoiceClient(int numberInvoice, string idClient, DateTime paymentDate, int idPayMethod, string payMethod,
             double money, Boolean condition, string paymentCondition)

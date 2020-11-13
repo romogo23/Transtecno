@@ -8,10 +8,10 @@ namespace DOM
 {
     public class User
     {
-        private string username { get; set; }
-        private string email { get; set; }
-        private string password { get; set; }
-        private int rol { get; set; }
+        public string username { get; set; }
+        public string email { get; set; }
+        public string password { get; set; }
+        public int rol { get; set; }
 
 
         public User(string username, string email, string password, int rol) 
