@@ -15,12 +15,12 @@ namespace DAO
 
         public Boolean InsertInvoiceClient(InvoiceClient invC)
         {
-            DAOInvoiceReceivingClient invoiceReceivingClient = new DAOInvoiceReceivingClient();
-            if (invoiceReceivingClient.VerifyInvoiceReceivingClient(invC.idClient) == 0)
+            if (verifyInvoiceClient(invC.numberInvoice) == 0)
             {
+                
 
                 String query = "INSERT INTO FACTURA_CLIENTE(NUMERO_FACTURA,ID_CLIENTE,FECHA_PAGO,ID_METODO_PAGO, METODO_PAGO," +
-                 "MONTO,ESTADO, CONDICION_PAGO) VALUES(@code,@name,@price,@quantity,@active,@unity,@category)";
+                 "MONTO,ESTADO, CONDICION_PAGO) VALUES(@numberInvoice, @idClient,@paymentDate,@idPayMethod,@payMethod,@money,@condition, @paymentCondition)";
                 SqlCommand comm = new SqlCommand(query, conn);
                 comm.Connection = conn;
                 comm.Parameters.AddWithValue("@numberInvoice", invC.numberInvoice);
@@ -36,9 +36,10 @@ namespace DAO
                     conn.Open();
                 }
                 comm.ExecuteNonQuery();
-                if (conn.State != System.Data.ConnectionState.Open)
+                if (conn.State != System.Data.ConnectionState.Closed)
                 {
-                    conn.Open();
+                    conn.Close();
+
                 }
                 return true;
             }
@@ -51,7 +52,6 @@ namespace DAO
 
         public Boolean ModifyInvoiceClient(InvoiceClient invC)
         {
-            DAOInvoiceReceivingClient invoiceReceivingClient = new DAOInvoiceReceivingClient();
             if (verifyInvoiceClient(invC.numberInvoice) == 0)
             {
 
@@ -67,9 +67,10 @@ namespace DAO
                     conn.Open();
                 }
                 comm.ExecuteNonQuery();
-                if (conn.State != System.Data.ConnectionState.Open)
+                if (conn.State != System.Data.ConnectionState.Closed)
                 {
-                    conn.Open();
+                    conn.Close();
+
                 }
                 return true;
             }
@@ -91,17 +92,17 @@ namespace DAO
                     conn.Open();
                 }
                 int verify = (int) comm.ExecuteScalar();
-                if (conn.State != System.Data.ConnectionState.Open)
-                {
-                    conn.Open();
-                }
-                return verify;   
+                 if (conn.State != System.Data.ConnectionState.Closed)
+                 {
+                    conn.Close();
+
+                 }
+            return verify;   
         }
 
 
         public Boolean CloseInvoiceClient(InvoiceClient invC)
         {
-            DAOInvoiceReceivingClient invoiceReceivingClient = new DAOInvoiceReceivingClient();
             if (verifyInvoiceClient(invC.numberInvoice) == 0)
             {
 
@@ -117,9 +118,10 @@ namespace DAO
                     conn.Open();
                 }
                 comm.ExecuteNonQuery();
-                if (conn.State != System.Data.ConnectionState.Open)
+                if (conn.State != System.Data.ConnectionState.Closed)
                 {
-                    conn.Open();
+                    conn.Close();
+
                 }
                 return true;
             }
@@ -128,6 +130,70 @@ namespace DAO
                 return false;
             }
 
+        }
+
+        public List<InvoiceClient> LoadInvoiceClient(string idClient)
+        {
+            String query = "Select * from FACTURA_CLIENTE where ID_CLIENTE = @ID_CLIENTE";
+            List<InvoiceClient> listInvoiceClient = new List<InvoiceClient>();
+            SqlCommand comm = new SqlCommand(query, conn);
+            comm.Parameters.AddWithValue("@ID_CLIENTE", idClient);
+            SqlDataReader reader;
+
+            if (conn.State != System.Data.ConnectionState.Open)
+            {
+                conn.Open();
+            }
+
+            reader = comm.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    listInvoiceClient.Add(new InvoiceClient((int)reader["NUMERO_FACTURA"], (string)reader["ID_CLIENTE"], (DateTime)reader["FECHA_PAGO"], (int)reader["ID_METODO_PAGO"], (string)reader["METODO_PAGO"], (double)reader["MONTO"], (Boolean)reader["ESTADO"], (string)reader["CONDICION_PAGO"]));
+                }
+            }
+
+            if (conn.State != System.Data.ConnectionState.Closed)
+            {
+                conn.Close();
+
+            }
+
+            return listInvoiceClient;
+        }
+
+
+        public List<InvoiceClient> LoadInvoiceClientsBydate(DateTime iniDate, DateTime endDate)
+        {
+            String query = "Select * from FACTURA_CLIENTE where FECHA_PAGO between @iniDate and @endDate";
+            List<InvoiceClient> listInvoiceClient = new List<InvoiceClient>();
+            SqlCommand comm = new SqlCommand(query, conn);
+            comm.Parameters.AddWithValue("@iniDate", iniDate);
+            comm.Parameters.AddWithValue("@endDate", endDate);
+            SqlDataReader reader;
+
+            if (conn.State != System.Data.ConnectionState.Open)
+            {
+                conn.Open();
+            }
+
+            reader = comm.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    listInvoiceClient.Add(new InvoiceClient((int)reader["NUMERO_FACTURA"], (string)reader["ID_CLIENTE"], (DateTime)reader["FECHA_PAGO"], (int)reader["ID_METODO_PAGO"], (string)reader["METODO_PAGO"], (double)reader["MONTO"], (Boolean)reader["ESTADO"], (string)reader["CONDICION_PAGO"]));
+                }
+            }
+
+            if (conn.State != System.Data.ConnectionState.Closed)
+            {
+                conn.Close();
+
+            }
+
+            return listInvoiceClient;
         }
 
     }

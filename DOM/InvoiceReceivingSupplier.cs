@@ -8,15 +8,15 @@ namespace DOM
 {
     public class InvoiceReceivingSupplier
     {
-        public string idClient { get; set; }
+        public string idSupplier { get; set; }
         public string email { get; set; }
-        public string nameClient { get; set; }
+        public string nameSupplier { get; set; }
 
         public InvoiceReceivingSupplier(string idClient, string email, string nameClient)
         {
-            this.idClient = idClient;
+            this.idSupplier = idClient;
             this.email = email;
-            this.nameClient = nameClient;
+            this.nameSupplier = nameClient;
         }
 
     }

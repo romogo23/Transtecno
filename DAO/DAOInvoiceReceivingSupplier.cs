@@ -11,27 +11,32 @@ namespace DAO
     class DAOInvoiceReceivingSupplier
     {
         SqlConnection conn = new SqlConnection(Properties.Settings.Default.connString);
-        public void InsertInvoiceReceivingSupplier(InvoiceReceivingSupplier invR)
+        public Boolean InsertInvoiceReceivingSupplier(InvoiceReceivingSupplier invR)
         {
-            if (VerifyInvoiceReceivingSupplier(invR.idClient) == 0)
+            if (VerifyInvoiceReceivingSupplier(invR.idSupplier) == 0)
             {
                 String query = "INSERT INTO DESTINATARIO_FACTURA_PROVEEDOR(ID_PROVEEDOR, CORREO, NOMBRE) " +
                     "VALUES(@idProveedor,@email,@name)";
 
                 SqlCommand comm = new SqlCommand(query, conn);
                 comm.Connection = conn;
-                comm.Parameters.AddWithValue("@idProveedor", invR.idClient);
+                comm.Parameters.AddWithValue("@idProveedor", invR.idSupplier);
                 comm.Parameters.AddWithValue("@email", invR.email);
-                comm.Parameters.AddWithValue("@name", invR.nameClient);
+                comm.Parameters.AddWithValue("@name", invR.nameSupplier);
                 if (conn.State != System.Data.ConnectionState.Open)
                 {
                     conn.Open();
                 }
                 comm.ExecuteNonQuery();
-                if (conn.State != System.Data.ConnectionState.Open)
+                if (conn.State != System.Data.ConnectionState.Closed)
                 {
-                    conn.Open();
+                    conn.Close();
+
                 }
+                return true;
+            }
+            else {
+                return false;
             }
         }
 
@@ -47,11 +52,46 @@ namespace DAO
                 conn.Open();
             }
             verify = comm.ExecuteNonQuery();
+            if (conn.State != System.Data.ConnectionState.Closed)
+            {
+                conn.Close();
+
+            }
+            return verify;
+        }
+
+        public List<InvoiceReceivingSupplier> LoadSuppliers(int name)
+        {
+            String query = "Select * from DESTINATARIO_FACTURA_PROVEEDOR where NOMBRE like '%' + @name + '%'";
+            List<InvoiceReceivingSupplier> listSuppliersName = new List<InvoiceReceivingSupplier>();
+            SqlCommand comm = new SqlCommand(query, conn);
+            comm.Parameters.AddWithValue("@name", name);
+            SqlDataReader reader;
+
             if (conn.State != System.Data.ConnectionState.Open)
             {
                 conn.Open();
             }
-            return verify;
+
+            reader = comm.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    listSuppliersName.Add(new InvoiceReceivingSupplier((string)reader["ID_PROVEEDOR"], (string)reader["CORREO"], (string)reader["NOMBRE"]));
+                }
+            }
+
+
+            if (conn.State != System.Data.ConnectionState.Closed)
+            {
+                conn.Close();
+
+            }
+
+
+            return listSuppliersName;
         }
+
     }
 }
