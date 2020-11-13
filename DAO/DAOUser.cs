@@ -9,7 +9,7 @@ namespace DAO
 {
     class DAOUser
     {
-        SqlConnection conn = new SqlConnection("");
+        SqlConnection conn = new SqlConnection(Properties.Settings.Default.connString);
 
         public Boolean insertUser() {
             return true;
