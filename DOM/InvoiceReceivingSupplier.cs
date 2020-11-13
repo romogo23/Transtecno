@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DOM
 {
-    class InvoiceReceivingSupplier
+    public class InvoiceReceivingSupplier
     {
         private string idClient { get; set; }
         private string email { get; set; }

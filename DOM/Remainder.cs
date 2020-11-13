@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DOM
 {
-    class Remainder
+    public class Remainder
     {
         private int idRemainder { get; set; }
         private int invoiceNumberSupplier { get; set; }
